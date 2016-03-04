@@ -29,7 +29,7 @@ $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 //$message = '<html><body>hello world</body></html>';
 //$message = file_get_contents('emailTemplate.html');
 
-$message ="
+
 <!DOCTYPE html>
 <html >
    <Head>
