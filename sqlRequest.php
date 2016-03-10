@@ -17,11 +17,13 @@ class SQLrequest {
 	}
 
 	public function listpatient($idPatient,$pdo){
+		$cleanid = preg_replace('/\s+/', '', $idPatient);
+		$iduser=trim($cleanid);
 		$sth = $pdo->prepare("SELECT *
 								FROM `nurse` n
 								JOIN mypatient mp ON n.id=mp.id_nurse
 								JOIN patient p ON p.id=mp.id_patient WHERE n.id = :id");
-	    $sth->bindParam(":id",$idPatient);
+	    $sth->bindParam(":id",$iduser);
 	    $sth->execute();
 	    $patient = $sth->fetchAll(PDO::FETCH_OBJ);
 	    $patient = array_filter($patient);

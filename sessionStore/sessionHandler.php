@@ -3,21 +3,17 @@
 
 //include_once 'dbclass.php'; 
 
-class SysSession implements SessionHandlerInterface{   
-
-
-	
+class SysSession implements SessionHandlerInterface{  
 
 	function open($path, $name) {
-		//var  $sessionId = session_id();
-		
+		/*
 	    $db = new PDO("mysql:host=localhost;dbname=nursecare", "root", "root");
-
-	    $sql = "INSERT INTO session SET session_id =" . $db->quote($sessionId) . ", session_data = '' ON DUPLICATE KEY UPDATE session_lastaccesstime = NOW()";
-	    $db->query($sql);    
+		$sql = "INSERT INTO session SET session_id =" . $db->quote(@$sessionId) . ", session_data = ".$db->quote($_REQUEST['userCryptedId'])." ON DUPLICATE KEY UPDATE session_lastaccesstime = NOW()";
+	    $db->query($sql); 
+	    */   
 	}
 
-	function read($sessionId) { 
+	function read($sessionId) {
 		
 	    $db = new PDO("mysql:host=localhost;dbname=nursecare", "root", "root");
 	    $sql = "SELECT session_data FROM session where session_id =" . $db->quote($sessionId);
@@ -29,11 +25,12 @@ class SysSession implements SessionHandlerInterface{
 	}
 
 	function write($sessionId, $data) { 
-		
+/*		
 	    $db = new PDO("mysql:host=localhost;dbname=nursecare", "root", "root");
-
-	    $sql = "INSERT INTO session SET session_id =" . $db->quote($sessionId) . ", session_data =" . $db->quote($data) . " ON DUPLICATE KEY UPDATE session_data =" . $db->quote($data);
+		$sql = "INSERT INTO session SET session_id =" . $db->quote($sessionId) . ", session_data =" . $db->quote($_REQUEST['userCryptedId']) . " ON DUPLICATE KEY UPDATE session_data =" . $db->quote($_REQUEST['userCryptedId']);
 	    $db->query($sql);
+	
+*/
 	}
 
 	function close() {
@@ -45,22 +42,23 @@ class SysSession implements SessionHandlerInterface{
 	function destroy($sessionId) {
 
 	    $db = new PDO("mysql:host=localhost;dbname=nursecare", "root", "root");
-
-	    $sql = "DELETE FROM session WHERE session_id =" . $db->quote($sessionId); 
+		$sql = "DELETE FROM session WHERE session_id =" . $db->quote($sessionId); 
 	    $db->query($sql);
 
-	    setcookie(session_name(), "", time() - 3600);
+	   // setcookie(session_name(), "", time() - 3600);
 	}
 
 	function gc($lifetime) {
+	    
 	    $db = new PDO("mysql:host=localhost;dbname=nursecare", "root", "root");
-
-	    $sql = "DELETE FROM session WHERE session_lastaccesstime < DATE_SUB(NOW(), INTERVAL " . $lifetime . " SECOND)";
+		$sql = "DELETE FROM session WHERE session_lastaccesstime < DATE_SUB(NOW(), INTERVAL " . $lifetime . " SECOND)";
 	    $db->query($sql);
 	}
 
 }
 
+$handler = new SysSession();
+session_set_save_handler($handler, true);
 
 
 ?>

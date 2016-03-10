@@ -1,7 +1,8 @@
 <?php 
-include_once 'accessControle.php';  
+include_once "accessControle.php";  
 include_once 'dbclass.php'; 
 require_once 'main-api.php';
+//require_once('sessionHandler.php');
 
 //print_r($_SERVER);
 $res = Array();
